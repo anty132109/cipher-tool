@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>数字変換ツール（全記号対応）</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
+    textarea { width: 100%; height: 120px; font-size: 1.1em; margin-bottom: 10px; }
+    button { padding: 10px 20px; font-size: 1em; margin: 5px 5px 10px 0; }
+  </style>
+</head>
+<body>
+  <h2>🔢 数字変換ツール（全記号対応・桁数別）</h2>
+  <p>区切り符：<strong>0</strong>（すべての数値は0非含有・一意）</p>
+
+  <textarea id="input" placeholder="ひらがなや記号を入力…"></textarea><br>
+  <button onclick="encode()">→ 数字に変換</button>
+  <button onclick="decode()">← 復元</button>
+  <button onclick="copyToClipboard()">📋 コピー</button><br>
+  <textarea id="output" placeholder="出力結果" readonly></textarea>
+
+  <script>
+    const SEP = "0";
+    const dict = {
+      'ぁ': 3,
+      'ぃ': 8,
+      'ぅ': 2,
+      'ぇ': 9,
+      'ぉ': 1,
+      'ゃ': 6,
+      'ゅ': 4,
+      'ょ': 5,
+      'っ': 7,
+      'あ': 87,
+      'い': 65,
+      'う': 81,
+      'え': 11,
+      'お': 25,
+      'か': 72,
+      'き': 95,
+      'く': 79,
+      'け': 41,
+      'こ': 36,
+      'さ': 63,
+      'し': 68,
+      'す': 64,
+      'せ': 19,
+      'そ': 77,
+      'た': 66,
+      'ち': 58,
+      'つ': 31,
+      'て': 59,
+      'と': 92,
+      'な': 18,
+      'に': 29,
+      'ぬ': 15,
+      'ね': 51,
+      'の': 33,
+      'は': 52,
+      'ひ': 38,
+      'ふ': 12,
+      'へ': 17,
+      'ほ': 84,
+      'ま': 34,
+      'み': 48,
+      'む': 32,
+      'め': 21,
+      'も': 23,
+      'や': 89,
+      'ゆ': 45,
+      'よ': 98,
+      'ら': 88,
+      'り': 61,
+      'る': 14,
+      'れ': 28,
+      'ろ': 94,
+      'わ': 47,
+      'を': 57,
+      'ん': 85,
+      'が': 877,
+      'ぎ': 177,
+      'ぐ': 765,
+      'げ': 911,
+      'ご': 815,
+      'ざ': 795,
+      'じ': 419,
+      'ず': 712,
+      'ぜ': 192,
+      'ぞ': 636,
+      'だ': 335,
+      'ぢ': 982,
+      'づ': 998,
+      'で': 152,
+      'ど': 759,
+      'ば': 823,
+      'び': 672,
+      'ぶ': 149,
+      'べ': 813,
+      'ぼ': 499,
+      'ぱ': 331,
+      'ぴ': 688,
+      'ぷ': 963,
+      'ぺ': 438,
+      'ぽ': 711,
+      '、': 9918,
+      '。': 1526,
+      '！': 6775,
+      '？': 7277,
+      '「': 2926,
+      '」': 9168,
+      '（': 4252,
+      '）': 6617,
+      'ー': 5928,
+      '・': 6495,
+      '-': 7421,
+      '…': 7841,
+      '：': 5934,
+      '；': 9862,
+      '『': 8694,
+      '』': 9775,
+      '《': 8439,
+      '》': 1824,
+      '#': 6555,
+      '@': 3851
+    };
+    const rev = {};
+    for (let [k, v] of Object.entries(dict)) {
+      rev[v.toString()] = k;
+    }
+
+    function encode() {
+      const text = document.getElementById("input").value.trim();
+      const result = [];
+      for (let c of text) {
+        result.push(dict[c] !== undefined ? dict[c].toString() : "�");
+      }
+      document.getElementById("output").value = result.join(SEP);
+    }
+
+    function decode() {
+      const input = document.getElementById("input").value.trim();
+      const tokens = input.split(SEP);
+      const result = tokens.map(t => rev[t] || "�").join('');
+      document.getElementById("output").value = result;
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+      alert("コピーしました！");
+    }
+  </script>
+</body>
+</html>
