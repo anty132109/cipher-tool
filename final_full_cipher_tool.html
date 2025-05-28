@@ -3,20 +3,21 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>数字変換ツール（完全版）</title>
+  <title>数字変換ツール（コピー機能付き）</title>
   <style>
     body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
     textarea { width: 100%; height: 120px; font-size: 1.1em; margin-bottom: 10px; }
-    button { padding: 10px 20px; font-size: 1em; margin-right: 10px; }
+    button { padding: 10px 20px; font-size: 1em; margin: 5px 5px 10px 0; }
   </style>
 </head>
 <body>
-  <h2>🔢 数字変換ツール（完全辞書版）</h2>
+  <h2>🔢 数字変換ツール（コピー機能付き）</h2>
   <p>区切り符：<strong>0</strong>（すべての数値は0非含有・一意）</p>
 
   <textarea id="input" placeholder="ひらがなや記号を入力…"></textarea><br>
   <button onclick="encode()">→ 数字に変換</button>
-  <button onclick="decode()">← 復元</button><br>
+  <button onclick="decode()">← 復元</button>
+  <button onclick="copyToClipboard()">📋 コピー</button><br>
   <textarea id="output" placeholder="出力結果" readonly></textarea>
 
   <script>
@@ -122,7 +123,7 @@
       const text = document.getElementById("input").value.trim();
       const result = [];
       for (let c of text) {
-        result.push(dict[c] !== undefined ? dict[c].toString() : "�");
+        result.push(dict[c] !== undefined ? dict[c].toString() : " ");
       }
       document.getElementById("output").value = result.join(SEP);
     }
@@ -130,8 +131,15 @@
     function decode() {
       const input = document.getElementById("input").value.trim();
       const tokens = input.split(SEP);
-      const result = tokens.map(t => rev[t] || "�").join('');
+      const result = tokens.map(t => rev[t] || " ").join('');
       document.getElementById("output").value = result;
+    }
+
+    function copyToClipboard() {
+      const output = document.getElementById("output");
+      output.select();
+      document.execCommand("copy");
+      alert("コピーしました！");
     }
   </script>
 </body>
